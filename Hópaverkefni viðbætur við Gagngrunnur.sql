@@ -14,9 +14,6 @@ create table employeesRegistration
 create table crewRegistration
 (
 	EmployeeNumber char(9),
-    firstName varchar(55),
-    lastName varchar(55),
-    JobTitle varchar(55),
     flightCode int(11),
     constraint crewRegistration_EmployeeReg_FK foreign key(EmployeeNumber) references employeesRegistration(EmployeeNumber),
 	constraint crewRegistration_flights_FK foreign key(flightCode) references flights(flightCode)
