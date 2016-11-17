@@ -136,3 +136,29 @@ values
 ('SE6863731','Liam','Andersson','1971-11-03','Sweden','Captain'),
 ('IS7485797','Darri','Valsson','1984-05-18','Iceland','First Officer'),
 ('DE1016276','Patrick','Hahn','1987-09-01','Germany','First Officer');
+
+insert into crewRegistration(EmployeeNumber,flightCode)
+values
+('IS4287694',26),
+('IS3010789',26),
+('NO3806792',26),
+('NO9863005',26),
+('IS2109280',26),
+('IS4160916',26),
+('IS1091517',26),
+('NO5151029',26);
+
+
+delimiter $$
+drop procedure if exists  FlightEmployeeInfo $$
+create procedure FlightEmployeeInfo(flight_Number char(5),flight_date date)
+begin
+	select employeesregistration.EmployeeNumber, firstName, lastName,birthDate,CountryOfOrigin,JobTitle 
+	from employeesregistration
+	inner join crewregistration on employeesregistration.EmployeeNumber = crewregistration.EmployeeNumber
+	inner join flights on crewregistration.flightCode = flights.flightCode
+	where flights.flightNumber = flight_Number and flights.flightDate = flight_date;
+end $$
+delimiter ;
+
+call FlightEmployeeInfo('FA501','2016-08-26');
