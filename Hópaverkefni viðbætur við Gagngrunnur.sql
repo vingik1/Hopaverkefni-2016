@@ -174,6 +174,7 @@ begin
 end $$
 delimiter ;
 
+/*drop trigger if exists check_Jobtitle;
 delimiter $$
 create trigger check_Jobtitle
 before insert on crewregistration
@@ -186,5 +187,6 @@ begin
     end if;
 end $$
 
+delimiter ;*/
 
 call AddFlightDeck('IS4287694',26);
