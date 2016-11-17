@@ -162,3 +162,29 @@ end $$
 delimiter ;
 
 call FlightEmployeeInfo('FA501','2016-08-26');
+
+-- delete from crewregistration where EmployeeNumber = 'IS4287694';
+
+delimiter $$
+drop procedure if exists  AddFlightDeck $$
+create procedure AddFlightDeck(Employee_Number char(9),flight_Code int(11))
+begin
+	Insert Into crewregistration(EmployeeNumber,flightCode)
+    VALUES(Employee_Number,flight_Code);
+end $$
+delimiter ;
+
+delimiter $$
+create trigger check_Jobtitle
+before insert on crewregistration
+for each row 
+begin
+	declare msg varchar(255);
+    if(new.) then
+		set msg = concat('Employee must be Captain or First Officer to fly the Airplane', cast());
+        signal sqlstate '45000' set message_text = msg;
+    end if;
+end $$
+
+
+call AddFlightDeck('IS4287694',26);
