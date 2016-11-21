@@ -185,8 +185,63 @@ begin
 		set msg = concat('Employee must be Captain or First Officer to fly the Airplane', cast());
         signal sqlstate '45000' set message_text = msg;
     end if;
-end $$
+end $$*/
 
-delimiter ;*/
+delimiter ;
 
 call AddFlightDeck('IS4287694',26);
+
+delimiter $$
+drop procedure if exists  AddCabinCrew $$
+create procedure AddCabinCrew(CabinCrewInfo text)
+begin
+	declare Employee_Number char(9);
+	declare flight_Code int;
+
+	declare CabinCrewStr int;
+	set CabinCrewStr = char_length(CabinCrewInfo);
+
+	while (CabinCrewStr > 0) do
+		-- rippa fremsta hlutanum í strengnum og set í Employee_Number breytuna
+		set Employee_Number = substring_index(CabinCrewInfo,';',1);
+        -- færi mig til í strengnum
+		set CabinCrewInfo = substring(CabinCrewInfo,locate(';',CabinCrewInfo) + 1);
+		
+        -- rippa næsta hlutann í strengnum og set í flightCode breytuna
+		set flight_Code = substring_index(CabinCrewInfo,';',1);
+        -- færi mig til í strengnum
+		set CabinCrewInfo = substring(CabinCrewInfo,locate(';',CabinCrewInfo) + 1);
+        
+        
+		Insert Into crewregistration(EmployeeNumber,flightCode)
+		VALUES(Employee_Number,flight_Code);
+        -- lengdin á strengnum sett í breytuna strLength áður en farið er í næstu umferð.
+		set CabinCrewStr = char_length(CabinCrewInfo);
+	end while;
+end $$
+delimiter ;
+
+Call AddCabinCrew('DE7129159;9;DE8510054;9;IS1040873;9;IS1582229;9;');
+
+delimiter $$
+drop procedure if exists CrewMemberHistory $$
+create procedure CrewMemberHistory(Employee_Number char(9))
+begin
+	Select flights.flightNumber,flightschedules.originatingAirport,flightschedules.destinationAirport,employeesregistration.JobTitle
+    from flightschedules
+    inner join flights on flightschedules.flightNumber = flights.flightNumber
+    inner join crewregistration on flights.flightCode = crewregistration.flightCode
+    inner join employeesregistration on crewregistration.EmployeeNumber = employeesregistration.EmployeeNumber
+    where employeesregistration.EmployeeNumber = Employee_Number;
+end $$
+delimiter ;
+
+call CrewMemberHistory('DE7129159');
+
+delimiter $$
+drop procedure if exists UpdateCabinCrew $$
+create procedure UpdateCabinCrew(Employee_Number char(9),flight_Code int(11))
+begin
+	
+end $$
+delimiter ;
