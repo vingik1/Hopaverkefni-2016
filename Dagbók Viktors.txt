@@ -1,3 +1,10 @@
 21.11.2016
-Fundur me� sigur� r. Ragnarsson me� �framhald af verkefninu eftir a� upphafalega  kr�fur fr� t�maverkefninu v�ri kl�ra�. 
-�kve�i� a� b�ta vi� t�flu e�a inn � t�flu sem inniheldur hnit flugvalla 
+Fundur með sigurð r. Ragnarsson með áframhald af verkefninu eftir að upphafalega  kröfur frá tímaverkefninu væri klárað. 
+ákveðið að bæta við töflu eða inn í töflu sem inniheldur hnit flugvalla 
+22.11.2016
+seti inn hnit í töfluna fyrir Airports.
+reyndi að setja Einar og Steinar í Github-ið. github-ið er ekki að finna email-ið hjá Einari en búið að ganga frá því. Steinar hefur ekki send sýnar upplýsingar
+23.11.2016
+Héld fund með Einar um hvernig python hlutinn af verkefninu myndi verða og hvernig það tengist gagngrunninum ákveði er að gera forrit sem admin stýrir og bætir inn starfsmenn í flug og býr til upplýsingar um 
+flugvélar.
+Steinar hefur ekki svarað skilaboðum.
