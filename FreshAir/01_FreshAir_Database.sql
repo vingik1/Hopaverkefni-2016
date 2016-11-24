@@ -26,7 +26,9 @@ create table Cities
 create table Airports
 (
 	IATAcode char(3) not null,
-	airportName varchar(75),
+	airportName varchar(75),	
+    	Latitude varchar(20),
+    	Longitude varchar(20),
 	cityID int,
 	constraint airport_PK primary key(IATAcode),
 	constraint airport_city_FK foreign key(cityID) references Cities(cityID)
