@@ -1,4 +1,36 @@
+create table aircraftInfo
+(
+	aircraftID char(6),
+	manufacturer varchar(75),
+    production_year year,
+    engine_type varchar(75),
+    aircraft_range decimal(7,2),
+    constraint aircraftInfo_aircrafts_FK foreign key(aircraftID) references aircrafts(aircraftID)
 
+);
+
+insert into aircraftinfo(aircraftID,manufacturer,production_year,engine_type,aircraft_range)
+values
+('TF-ASA','Airbus','2005','four-engine',10400),
+('TF-BRA','Airbus','1986','Twin-engine',6480),
+('TF-BUS','Boeing Commercial Airplanes','1993','twin-engine',9704),
+('TF-CHM','Boeing Commercial Airplanes','1981','twin-engine',7590),
+('TF-CNA','Boeing Commercial Airplanes','1981','twin-engine',7590),
+('TF-ELP','Airbus','1992','twin-engine',13430),
+('TF-GRT','Boeing Commercial Airplanes','1981','twin-engine',7590),
+('TF-GSF','Boeing Commercial Airplanes','1981','twin-engine',7590),
+('TF-HUX','Airbus','1986','Twin-engine',6480),
+('TF-LIN','Airbus','1986','Twin-engine',6480),
+('TF-LOK','Boeing Commercial Airplanes','1981','twin-engine',7590),
+('TF-LUR','Airbus','2010','twin-engine',15000),
+('TF-LUS','Boeing Commercial Airplanes','1981','twin-engine',7590),
+('TF-MUR','Airbus','1986','Twin-engine',6480),
+('TF-NEI','Boeing Commercial Airplanes','2007','twin-engine',14800),
+('TF-PHY','Boeing Commercial Airplanes','1981','twin-engine',7590),
+('TF-RUM','Airbus','1986','Twin-engine',6480),
+('TF-TUR','Airbus','2005','four-engine',10400),
+('TF-WIN','Airbus','1986','Twin-engine',6480),
+('TF-YES','Boeing Commercial Airplanes','1981','twin-engine',7590);
 
 create table employeesRegistration
 (
@@ -240,8 +272,37 @@ call CrewMemberHistory('DE7129159');
 
 delimiter $$
 drop procedure if exists UpdateCabinCrew $$
-create procedure UpdateCabinCrew(Employee_Number char(9),flight_Code int(11))
+create procedure UpdateCabinCrew(Employee_Number char(9), new_flightCode int(11))
 begin
-	
+	update crewregistration 
+    set crewregistration.flightCode = new_flightCode
+    where crewregistration.EmployeeNumber = Employee_Number;
 end $$
 delimiter ;
+
+call UpdateCabinCrew('IS4160916',9);
+
+delimiter $$
+drop procedure if exists AddFlightGeneralStaff $$
+create procedure AddFlightGeneralStaff(Employee_Number char(9), new_flightCode int(11))
+begin
+		Insert Into crewregistration(EmployeeNumber,flightCode)
+		VALUES(Employee_Number,flight_Code);
+end $$
+delimiter ;
+
+
+
+
+
+
+
+delimiter $$
+drop procedure if exists SeatingArrangement $$
+create procedure SeatingArrangement(flight_Number char(5),flight_date date)
+begin
+
+end $$
+delimiter ;
+
+
