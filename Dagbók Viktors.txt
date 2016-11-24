@@ -7,4 +7,7 @@ reyndi að setja Einar og Steinar í Github-ið. github-ið er ekki að finna em
 23.11.2016
 Héld fund með Einar um hvernig python hlutinn af verkefninu myndi verða og hvernig það tengist gagngrunninum ákveði er að gera forrit sem admin stýrir og bætir inn starfsmenn í flug og býr til upplýsingar um 
 flugvélar.
-Steinar hefur ekki svarað skilaboðum.
+Steinar hefur ekki svarað skilaboðum um að bæta hann sem collaborator í repository-ið.
+24.11.2016
+færði hluti sem fór ekki á github þegar ég commit-aði því í gegnum desktop github, held áfram að klára stored procedures 
+Steinar svarað en ekki gengur að bæta hann við sem collaborator þar sem github finnur ekki username-ið sem hann gaf upp eða email-ið.
