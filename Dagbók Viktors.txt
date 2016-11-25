@@ -11,3 +11,5 @@ Steinar hefur ekki svarað skilaboðum um að bæta hann sem collaborator í rep
 24.11.2016
 færði hluti sem fór ekki á github þegar ég commit-aði því í gegnum desktop github, held áfram að klára stored procedures 
 Steinar svarað en ekki gengur að bæta hann við sem collaborator þar sem github finnur ekki username-ið sem hann gaf upp eða email-ið.
+25.11.2016
+Talaði við steinar ákvöðum að hann myndi gera vefsíðu fyrir bókun á flugi.
