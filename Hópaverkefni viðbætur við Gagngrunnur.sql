@@ -301,8 +301,15 @@ delimiter $$
 drop procedure if exists SeatingArrangement $$
 create procedure SeatingArrangement(flight_Number char(5),flight_date date)
 begin
-
+	select classes.className,concat(aircraftseats.rowNumber,aircraftseats.seatNumber) as 'Seat Number'
+    from classes
+    inner join aircraftseats on classes.classID = aircraftseats.classID
+    inner join aircrafts on aircraftseats.aircraftID = aircrafts.aircraftID
+    inner join flights on aircrafts.aircraftID = flights.aircraftID
+    where flights.flightNumber = flight_Number and flights.flightDate = flight_date;
 end $$
 delimiter ;
+
+call SeatingArrangement('FA501','2016-08-01');
 
 
