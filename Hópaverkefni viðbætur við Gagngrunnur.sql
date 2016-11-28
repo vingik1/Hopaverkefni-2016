@@ -213,11 +213,19 @@ before insert on crewregistration
 for each row 
 begin
 	declare msg varchar(255);
-    if(new.) then
-		set msg = concat('Employee must be Captain or First Officer to fly the Airplane', cast());
+    declare Job_Title varchar(55);
+    select employeesregistration.JobTitle into Job_Title
+    from employeesregistration
+    inner join crewregistration on employeesregistration.EmployeeNumber = crewregistration.EmployeeNumber
+    where crewregistration.flightCode = new.flightCode;
+    
+    if(Job_Title = 'Captain' or Job_Title = 'First Officer') then
+		set msg = concat('Employee must be Captain or First Officer to fly the Airplane');
         signal sqlstate '45000' set message_text = msg;
     end if;
-end $$*/
+end $$
+
+delimiter ;*/
 
 delimiter ;
 
