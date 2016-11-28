@@ -299,17 +299,45 @@ delimiter ;
 
 delimiter $$
 drop procedure if exists SeatingArrangement $$
-create procedure SeatingArrangement(flight_Number char(5),flight_date date)
+create procedure SeatingArrangement(aircraft_ID char(6))
 begin
-	select classes.className,concat(aircraftseats.rowNumber,aircraftseats.seatNumber) as 'Seat Number'
+	declare Class_Name varchar(25);
+    declare row_number tinyint(4);
+    declare seat_number char(1);
+    declare aircraft_deck char(5);
+    
+    declare xml_string text;
+    
+    declare done int default false;
+ -- concat(aircraftseats.rowNumber,aircraftseats.seatNumber) as 'Seat Number'
+	declare SeatingCursor cursor for
+	select classes.className,aircraftseats.rowNumber,aircraftseats.seatNumber,aircraftseats.deck
     from classes
     inner join aircraftseats on classes.classID = aircraftseats.classID
     inner join aircrafts on aircraftseats.aircraftID = aircrafts.aircraftID
-    inner join flights on aircrafts.aircraftID = flights.aircraftID
-    where flights.flightNumber = flight_Number and flights.flightDate = flight_date;
+    where aircrafts.aircraftID = aircraft_ID;
+    
+    declare continue handler for not found set done = true;
+    
+    set xml_string = '<Aircraft>';
+    
+    open SeatingCursor;
+    
+    read_loop: loop
+		fetch SeatingCursor into Class_Name,row_number,seat_number,aircraft_deck;
+        if done then
+			leave read_loop;
+		end if;
+			set xml_string = concat(xml_string,'<SeatingArrangement><Name>',Class_Name,'</Name><Seat>',concat(row_number,seat_number),'</Seat><deck>',aircraft_deck,'</deck></SeatingArrangement>');
+    end loop;
+    
+    set xml_string = concat(xml_string,'</Aircraft>');
+    
+    close SeatingCursor;
+    select xml_string;
 end $$
 delimiter ;
 
-call SeatingArrangement('FA501','2016-08-01');
+call SeatingArrangement('TF-TUR');
 
 
