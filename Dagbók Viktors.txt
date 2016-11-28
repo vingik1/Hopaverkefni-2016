@@ -14,5 +14,5 @@ Steinar svarað en ekki gengur að bæta hann við sem collaborator þar sem git
 25.11.2016
 Talaði við steinar ákvöðum að hann myndi gera vefsíðu fyrir bókun á flugi.
 28.11.2016
-haldið áfram með Stored procedure, gert SeatingArrangement og byrjað á stored procedure eða trigger sem stoppar það að flug sé sett á vitlausan vikudag. næstum því búið að klára það sem Siggi hefur sett fyrir í verkefnið og bráðum að fara byrja að bæta við
+haldið áfram með Stored procedure, gert SeatingArrangement og byrjað á stored procedure eða trigger sem stoppar það að flug sé sett á vitlausan vikudag. næstum því búið að klára það sem Siggi hefur sett fyrir í verkefnið og bráðum að fara byrja að bæta við hluti sem ég vil bæta við.
 
