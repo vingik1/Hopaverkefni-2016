@@ -349,3 +349,32 @@ delimiter ;
 call SeatingArrangement('TF-TUR');
 
 
+
+drop procedure if exists  AddFlightDeck2 $$
+create procedure AddFlightDeck2(Employee_Number char(9),flight_Code int(11))
+begin
+	declare FlyerJob varchar(55);
+    declare msg varchar(255);
+
+	select employeesregistration.JobTitle into FlyerJob from employeesregistration
+    inner join crewregistration on employeesregistration.EmployeeNumber = crewregistration.EmployeeNumber
+    where crewregistration.EmployeeNumber = Employee_Number
+    and crewregistration.flightCode = flightCode;
+    
+    set msg = 'Employee must be Captain or First Officer to fly the Airplane';
+    
+    case
+		when (FlyerJob = 'First Officer') then 
+    		Insert Into crewregistration(EmployeeNumber,flightCode)
+			VALUES(Employee_Number,flight_Code);
+    
+		when FlyerJob = 'First Officer' then 
+			Insert Into crewregistration(EmployeeNumber,flightCode)
+			VALUES(Employee_Number,flight_Code);
+		else
+			signal sqlstate '45000' set message_text = msg;
+    end case;
+    
+end $$
+delimiter ;
+
