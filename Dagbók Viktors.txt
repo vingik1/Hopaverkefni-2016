@@ -3,10 +3,11 @@ Fundur með sigurð r. Ragnarsson með áframhald af verkefninu eftir að upphaf
 ákveðið að bæta við töflu eða inn í töflu sem inniheldur hnit flugvalla 
 22.11.2016
 seti inn hnit í töfluna fyrir Airports.
-reyndi að setja Einar og Steinar í Github-ið. github-ið er ekki að finna email-ið hjá Einari en búið að ganga frá því. Steinar hefur ekki send sýnar upplýsingar
+reyndi að setja Einar og Steinar í Github-ið. github-ið er ekki að finna email-ið hjá Einari en búið að ganga frá því. 
+Steinar hefur ekki send sýnar upplýsingar
 23.11.2016
-Héld fund með Einar um hvernig python hlutinn af verkefninu myndi verða og hvernig það tengist gagngrunninum ákveði er að gera forrit sem admin stýrir og bætir inn starfsmenn í flug og býr til upplýsingar um 
-flugvélar.
+Héld fund með Einar um hvernig python hlutinn af verkefninu myndi verða og hvernig það tengist gagngrunninum ákveði er að gera forrit sem 
+admin stýrir og bætir inn starfsmenn í flug og býr til upplýsingar um flugvélar.
 Steinar hefur ekki svarað skilaboðum um að bæta hann sem collaborator í repository-ið.
 24.11.2016
 færði hluti sem fór ekki á github þegar ég commit-aði því í gegnum desktop github, held áfram að klára stored procedures 
@@ -14,6 +15,12 @@ Steinar svarað en ekki gengur að bæta hann við sem collaborator þar sem git
 25.11.2016
 Talaði við steinar ákvöðum að hann myndi gera vefsíðu fyrir bókun á flugi.
 28.11.2016
-haldið áfram með Stored procedure, gert SeatingArrangement og byrjað á stored procedure eða trigger sem stoppar það að flug sé sett á vitlausan vikudag. næstum því búið að klára það sem Siggi hefur sett fyrir í verkefnið og bráðum að fara byrja að bæta við hluti sem ég vil bæta við.
+haldið áfram með Stored procedure, gert SeatingArrangement og byrjað á stored procedure eða trigger sem stoppar það að flug sé sett á
+vitlausan vikudag. næstum því búið að klára það sem Siggi hefur sett fyrir í verkefnið og bráðum að fara byrja að bæta við hluti sem ég
+vil bæta við.
 29.11.2016
 lendi á stopp á nokkrum stored procedures í dag.
+30.11.2016
+héld áfram að vinna í Stored Procedure en varð stopp og á eftir að tala við sigga um aðstoð
+setti Upplýsingar á Stored Procedure sem Einar og Steinar get notað í Python og Vefsíðuna.
+þær eru um hvað þær gera og hvernig þær virka.
