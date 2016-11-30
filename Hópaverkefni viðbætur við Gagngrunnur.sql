@@ -351,3 +351,49 @@ call SeatingArrangement('TF-TUR');
 
 
 
+-- Stored Procedure fyrir Steinar
+
+delimiter $$
+drop procedure if exists PassengerPaymentBooking $$
+create procedure PassengerPaymentBooking(payment_type bit,
+card_issued_by varchar(35),
+cardholders_name varchar(55),
+class_id int,
+return_flight tinyint)
+begin
+	insert into Bookings(timeOfBooking,paymentType,cardIssuedBy,cardholdersName,classID,returnFLight) 
+	values(curdate(),payment_type, card_issued_by,cardholders_name,class_id,return_flight);
+end $$
+delimiter ;
+
+call PassengerPaymentBooking(1,'VISA','Barry manalo',3,1);
+
+
+delimiter $$
+drop procedure if exists FlightBooking $$
+create procedure FlightBooking(booking_number int,
+ flight_Code int,
+ flight_order tinyint)
+begin
+		insert into bookedflights(bookingNumber,flightCode,flightOrder) 
+			values(booking_number, flight_Code, flight_order);
+end $$
+delimiter ;
+
+call FlightBooking(292,72,1);
+
+
+delimiter $$
+drop procedure if exists PassengerBooking $$
+create procedure PassengerBooking(passenger_id varchar(35),
+passenger_name varchar(55),
+seat_id int ,
+price_id int,
+booked_FlightID int)
+begin
+	insert into Passengers(personID,personName,seatID,priceID,bookedFlightID) 
+		values(passenger_id,passenger_name,seat_id,price_id,booked_FlightID);
+end $$
+delimiter ;
+
+call PassengerBooking('SE19647389','Larry Finley',1137,6,294);
