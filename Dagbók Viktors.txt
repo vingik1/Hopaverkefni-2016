@@ -24,3 +24,5 @@ lendi á stopp á nokkrum stored procedures í dag.
 héld áfram að vinna í Stored Procedure en varð stopp og á eftir að tala við sigga um aðstoð
 setti Upplýsingar á Stored Procedure sem Einar og Steinar get notað í Python og Vefsíðuna.
 þær eru um hvað þær gera og hvernig þær virka.
+01.12.2016
+klárað triggers á SP og búið til views fyrir heimasíðu steinars
