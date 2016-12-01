@@ -206,9 +206,10 @@ begin
 end $$
 delimiter ;
 
-/*drop trigger if exists check_Jobtitle;
+
+drop trigger if exists check_Jobtitle_FlightAttendant;
 delimiter $$
-create trigger check_Jobtitle
+create trigger check_Jobtitle_FlightAttendant
 before insert on crewregistration
 for each row 
 begin
@@ -216,16 +217,33 @@ begin
     declare Job_Title varchar(55);
     select employeesregistration.JobTitle into Job_Title
     from employeesregistration
-    inner join crewregistration on employeesregistration.EmployeeNumber = crewregistration.EmployeeNumber
-    where crewregistration.flightCode = new.flightCode;
+    where employeesregistration.EmployeeNumber = new.EmployeeNumber;
     
-    if(Job_Title = 'Captain' or Job_Title = 'First Officer') then
-		set msg = concat('Employee must be Captain or First Officer to fly the Airplane');
-        signal sqlstate '45000' set message_text = msg;
+	if(Job_Title not like 'Flight Attendant') then 
+			set msg = 'Employee must be Flight Attendant';
+            signal sqlstate '45000' set message_text = msg;   
     end if;
 end $$
 
-delimiter ;*/
+delimiter ;
+
+drop trigger if exists check_Jobtitle_Capt_or_Officer;
+delimiter $$
+create trigger check_Jobtitle_Capt_or_Officer
+before insert on crewregistration
+for each row 
+begin
+	declare msg varchar(255);
+    declare Job_Title varchar(55);
+    select employeesregistration.JobTitle into Job_Title
+    from employeesregistration
+    where employeesregistration.EmployeeNumber = new.EmployeeNumber;
+    
+	if(Job_Title not like 'First Officer') then 
+			set msg = 'Employee must be Captain or First Officer to fly the Airplane';
+            signal sqlstate '45000' set message_text = msg;
+    end if;
+end $$
 
 delimiter ;
 
