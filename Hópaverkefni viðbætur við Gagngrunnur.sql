@@ -415,3 +415,29 @@ end $$
 delimiter ;
 
 call PassengerBooking('SE19647389','Larry Finley',1137,6,294);
+-- views fyrir heimasíðuna hjá Steinari
+
+drop view if exists IncomingFlights;
+create view IncomingFlights
+as
+	select distinct flights.flightDate, flightschedules.flightNumber, airports.airportName, cities.cityName
+    from flights
+    inner join flightschedules on flights.flightNumber = flightschedules.flightNumber
+    inner join airports on flightschedules.originatingAirport = airports.IATAcode
+    inner join cities on airports.cityID = cities.cityID
+    where flights.flightDate = curdate();
+    
+    select * from IncomingFlights;
+    
+    drop view if exists Departure;
+create view DepartureFlight
+as
+	select distinct flights.flightDate, flightschedules.flightNumber, airports.airportName, cities.cityName,scheduleweekdays.departure
+    from scheduleweekdays
+    inner join flightschedules on scheduleweekdays.flightNumber = flightschedules.flightNumber
+    inner join flights on flightschedules.flightNumber = flights.flightNumber
+    inner join airports on flightschedules.destinationAirport = airports.IATAcode
+    inner join cities on airports.cityID = cities.cityID
+    where flights.flightDate = curdate();
+    
+    select * from DepartureFlight;
