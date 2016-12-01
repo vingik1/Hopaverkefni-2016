@@ -14,5 +14,15 @@ db = MySQLdb.connect(host=host,
 # CREATE A CURSOR
 cur = db.cursor()
 
+
 # RUN AN SQL COMMAND
-cur.execute("SELECT * FROM aircrafts")
+def get_employees(index):
+    cur.execute("SELECT firstName as 'First Name', JobTitle as 'Job' FROM employeesregistration LIMIT " + str(index) + ",12")
+
+    return cur
+
+
+def count_employees():
+    cur.execute("SELECT COUNT(EmployeeNumber) as 'E' FROM employeesregistration")
+
+    return cur.fetchone()

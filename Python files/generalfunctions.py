@@ -2,6 +2,7 @@ import pygame
 
 pygame.init()
 
+
 # Write text on screen function
 def message(msg, col, xy, font, screen):
     text = font.render(msg, True, col)
