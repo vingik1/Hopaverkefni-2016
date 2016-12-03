@@ -318,11 +318,6 @@ end $$
 delimiter ;
 
 
-
-
-
-
-
 delimiter $$
 drop procedure if exists SeatingArrangement $$
 create procedure SeatingArrangement(aircraft_ID char(6))
@@ -331,10 +326,12 @@ begin
     declare row_number tinyint(4);
     declare seat_number char(1);
     declare aircraft_deck char(5);
+    declare aircraft_type varchar(35);
     
     declare xml_string text;
     
     declare done int default false;
+    
  -- concat(aircraftseats.rowNumber,aircraftseats.seatNumber) as 'Seat Number'
 	declare SeatingCursor cursor for
 	select classes.className,aircraftseats.rowNumber,aircraftseats.seatNumber,aircraftseats.deck
@@ -347,8 +344,12 @@ begin
     
     set xml_string = '<Aircraft>';
     
-    open SeatingCursor;
+    select aircrafts.aircraftType into aircraft_type
+    from aircrafts
+    where aircrafts.aircraftID = aircraft_ID;
     
+    open SeatingCursor;
+    if (aircraft_type like 'Airbus A380') then
     read_loop: loop
 		fetch SeatingCursor into Class_Name,row_number,seat_number,aircraft_deck;
         if done then
@@ -356,6 +357,18 @@ begin
 		end if;
 			set xml_string = concat(xml_string,'<SeatingArrangement><Name>',Class_Name,'</Name><Seat>',concat(row_number,seat_number),'</Seat><deck>',aircraft_deck,'</deck></SeatingArrangement>');
     end loop;
+     end if;
+     
+     
+    if (aircraft_type not like 'Airbus A380') then
+    read_loop: loop
+		fetch SeatingCursor into Class_Name,row_number,seat_number,aircraft_deck;
+        if done then
+			leave read_loop;
+		end if;    
+     set xml_string = concat(xml_string,'<SeatingArrangement><Name>',Class_Name,'</Name><Seat>',concat(row_number,seat_number),'</Seat></SeatingArrangement>');
+    end loop;
+     end if;    
     
     set xml_string = concat(xml_string,'</Aircraft>');
     
@@ -364,7 +377,10 @@ begin
 end $$
 delimiter ;
 
+-- Airbus A380
 call SeatingArrangement('TF-TUR');
+-- ekki Airbus A380
+call SeatingArrangement('TF-RUM');
 
 
 
