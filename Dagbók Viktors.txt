@@ -26,3 +26,5 @@ setti Upplýsingar á Stored Procedure sem Einar og Steinar get notað í Python
 þær eru um hvað þær gera og hvernig þær virka.
 01.12.2016
 klárað triggers á SP og búið til views fyrir heimasíðu steinars
+02.12.2016
+Klárað SeatingArrangement SP 
