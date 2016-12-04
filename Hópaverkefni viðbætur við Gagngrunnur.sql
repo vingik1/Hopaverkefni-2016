@@ -32,6 +32,9 @@ values
 ('TF-WIN','Airbus','1986','Twin-engine',6480),
 ('TF-YES','Boeing Commercial Airplanes','1981','twin-engine',7590);
 
+
+-- --------------------------- Búa til og setja inn values í employeesRegistration og crewRegistration ------------------------
+
 create table employeesRegistration
 (
 	EmployeeNumber char(9),
@@ -180,6 +183,10 @@ values
 ('IS1091517',26),
 ('NO5151029',26);
 
+-- -------------------------------- endir -------------------------------------------------------------------------------
+
+-- --------------------------------------- FligtEmployeeInfo --------------------------------------------------
+-- sýnir starfsmenn í ákveðnu flugi
 
 delimiter $$
 drop procedure if exists  FlightEmployeeInfo $$
@@ -194,9 +201,10 @@ end $$
 delimiter ;
 
 call FlightEmployeeInfo('FA501','2016-08-26');
+-- ----------------------------------- endir FlightEmployeeIfno -------------------------------------------
 
--- delete from crewregistration where EmployeeNumber = 'IS4287694';
-
+-- ----------------------------------- AddFlightDeck og Trigger --------------------------------------------
+-- stored procedure sem bættir við Flugmönnum og Trigger sem passar upp á það að þeir séu captain eða flight officer
 delimiter $$
 drop procedure if exists  AddFlightDeck $$
 create procedure AddFlightDeck(Employee_Number char(9),flight_Code int(11))
@@ -206,26 +214,6 @@ begin
 end $$
 delimiter ;
 
-
-drop trigger if exists check_Jobtitle_FlightAttendant;
-delimiter $$
-create trigger check_Jobtitle_FlightAttendant
-before insert on crewregistration
-for each row 
-begin
-	declare msg varchar(255);
-    declare Job_Title varchar(55);
-    select employeesregistration.JobTitle into Job_Title
-    from employeesregistration
-    where employeesregistration.EmployeeNumber = new.EmployeeNumber;
-    
-	if(Job_Title not like 'Flight Attendant') then 
-			set msg = 'Employee must be Flight Attendant';
-            signal sqlstate '45000' set message_text = msg;   
-    end if;
-end $$
-
-delimiter ;
 
 drop trigger if exists check_Jobtitle_Capt_or_Officer;
 delimiter $$
@@ -247,7 +235,31 @@ end $$
 
 delimiter ;
 
+drop trigger if exists check_Jobtitle_Capt;
+delimiter $$
+create trigger check_Jobtitle_Capt_or_Officer
+before insert on crewregistration
+for each row 
+begin
+	declare msg varchar(255);
+    declare Job_Title varchar(55);
+    select employeesregistration.JobTitle into Job_Title
+    from employeesregistration
+    where employeesregistration.EmployeeNumber = new.EmployeeNumber;
+    
+	if(Job_Title not like 'Captain') then 
+			set msg = 'Employee must be Captain or First Officer to fly the Airplane';
+            signal sqlstate '45000' set message_text = msg;
+    end if;
+end $$
+
+delimiter ;
+
 call AddFlightDeck('IS4287694',26);
+
+-- ----------------------------- Endir AddflightDeck og Trigger -----------------------------
+-- ----------------------------------- AddCabinCrew og Trigger --------------------------------------------
+-- stored procedure sem bættir við flugþjónum og Trigger sem passar upp á það að þeir séu Flight attendant
 
 delimiter $$
 drop procedure if exists  AddCabinCrew $$
@@ -279,8 +291,31 @@ begin
 end $$
 delimiter ;
 
-Call AddCabinCrew('DE7129159;9;DE8510054;9;IS1040873;9;IS1582229;9;');
+drop trigger if exists check_Jobtitle_FlightAttendant;
+delimiter $$
+create trigger check_Jobtitle_FlightAttendant
+before insert on crewregistration
+for each row 
+begin
+	declare msg varchar(255);
+    declare Job_Title varchar(55);
+    select employeesregistration.JobTitle into Job_Title
+    from employeesregistration
+    where employeesregistration.EmployeeNumber = new.EmployeeNumber;
+    
+	if(Job_Title not like 'Flight Attendant') then 
+			set msg = 'Employee must be Flight Attendant';
+            signal sqlstate '45000' set message_text = msg;   
+    end if;
+end $$
 
+delimiter ;
+
+Call AddCabinCrew('DE7129159;9;DE8510054;9;IS1040873;9;IS1582229;9;');
+-- -------------------------------- endir AddCabinCrew og Trigger --------------------------------------------
+
+-- -------------------------------- CrewMemberHistory --------------------------------------------------------
+-- skoðar í hvað flug sem ákveðinn starfsmaður hefur unnið í
 delimiter $$
 drop procedure if exists CrewMemberHistory $$
 create procedure CrewMemberHistory(Employee_Number char(9))
@@ -295,7 +330,9 @@ end $$
 delimiter ;
 
 call CrewMemberHistory('DE7129159');
+-- --------------------------- endir CrewMemberHistory --------------------------------------------------------
 
+-- --------------------------------- UpdateCabinCrew ----------------------------------------------------------
 delimiter $$
 drop procedure if exists UpdateCabinCrew $$
 create procedure UpdateCabinCrew(Employee_Number char(9), new_flightCode int(11))
@@ -307,6 +344,10 @@ end $$
 delimiter ;
 
 call UpdateCabinCrew('IS4160916',9);
+-- ------------------------------- Endir UpdateCabinCrew ------------------------------------------------------
+
+-- ------------------------------- AddFlightGeneralStaff ----------------------------------------------------
+-- Stored procedure sem á að bæta við almenna starfsmenn við í flug t.d:  hlaðmenn,ræsting,afgreiðsla(móttaka,innskráing)
 
 delimiter $$
 drop procedure if exists AddFlightGeneralStaff $$
@@ -316,8 +357,10 @@ begin
 		VALUES(Employee_Number,flight_Code);
 end $$
 delimiter ;
+-- ------------------------------ endir AddFlightGeneralStaff --------------------------------------------------
 
-
+-- ------------------------------ SeatingArrangement -----------------------------------------------------------
+-- setur sætaskipan í ákveðinni flugvél á XML formati
 delimiter $$
 drop procedure if exists SeatingArrangement $$
 create procedure SeatingArrangement(aircraft_ID char(6))
@@ -382,10 +425,13 @@ call SeatingArrangement('TF-TUR');
 -- ekki Airbus A380
 call SeatingArrangement('TF-RUM');
 
-
+-- ------------------------------ endir SeatingArrangement ------------------------------------------------------
 
 
 -- Stored Procedure fyrir Steinar
+
+-- ------------------------------- PassengerPaymentBooking ------------------------------------------------
+-- borgunarferlið fyrir bókun á flugi
 
 delimiter $$
 drop procedure if exists PassengerPaymentBooking $$
@@ -401,8 +447,10 @@ end $$
 delimiter ;
 
 call PassengerPaymentBooking(1,'VISA','Barry manalo',3,1);
+-- ------------------------------- endir PassengerPaymentBooking ------------------------------------------------
 
-
+-- -------------------------------- FlightBooking ---------------------------------------------------------------
+-- bókar í flugið 
 delimiter $$
 drop procedure if exists FlightBooking $$
 create procedure FlightBooking(booking_number int,
@@ -415,8 +463,10 @@ end $$
 delimiter ;
 
 call FlightBooking(292,72,1);
+-- -------------------------------- endir FlightBooking --------------------------------------------------------
 
-
+-- -------------------------------- PassengerBooking ----------------------------------------------------------
+-- býr til farþegan í flug
 delimiter $$
 drop procedure if exists PassengerBooking $$
 create procedure PassengerBooking(passenger_id varchar(35),
@@ -431,7 +481,11 @@ end $$
 delimiter ;
 
 call PassengerBooking('SE19647389','Larry Finley',1137,6,294);
+-- -------------------------------- endir PassengerBooking ----------------------------------------------------
+
 -- views fyrir heimasíðuna hjá Steinari
+-- -------------------------------- Incomingflights ---------------------------------------------------------
+-- sér flug sem eru að fara á að koma á sama degi
 
 drop view if exists IncomingFlights;
 create view IncomingFlights
@@ -444,7 +498,10 @@ as
     where flights.flightDate = curdate();
     
     select * from IncomingFlights;
-    
+-- -------------------------------- endir Incomingflights ------------------------------------------------
+
+-- -------------------------------- Departure ----------------------------------------------------
+-- sér flug sem eru að fara á sama degi
     drop view if exists Departure;
 create view DepartureFlight
 as
@@ -457,9 +514,11 @@ as
     where flights.flightDate = curdate();
     
     select * from DepartureFlight;
-    
-    
-    
+   
+  -- -------------------------------  endir departure -----------------------------------------------
+  
+  -- ------------------------------- Flight_insert --------------------------------------------------
+  -- skoðar hvort dagsetningar(flightDate) falli á áðurnefnda vikudaga svo insert-ar í flights tofluna
     delimiter $$
 drop procedure if exists Flight_Insert $$
 create procedure Flight_Insert(flight_Number char(5),flight_date date,aircraft_ID char(6),flight_Time time)
@@ -488,4 +547,4 @@ end $$
 delimiter ;
 
 call Flight_Insert('FA501','2017-01-01','TF-GSF','21:15');
-
+-- ------------------------------------- endir Flight_insert ----------------------------------------------------------
