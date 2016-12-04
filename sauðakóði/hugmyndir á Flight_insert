@@ -1,0 +1,37 @@
+	declare Check_weekday int(11);
+    declare Week_day int(11);
+    declare msg varchar(255);
+    
+    SELECT DAYOFWEEK(flight_date) into Check_weekday;
+    
+    
+	select weekdays.weekdayNumber into Week_day
+    from flights
+    inner join flightschedules on flights.flightNumber = flightschedules.flightNumber
+    inner join scheduleweekdays on flightschedules.flightNumber = scheduleweekdays.flightNumber
+    inner join weekdays on scheduleweekdays.weekday = weekdays.weekdayNumber
+    where flights.flightDate = flight_date and DAYOFWEEK(flight_date) = Week_day and flights.flightNumber = flight_Number;
+    
+    
+    
+    
+    
+    select scheduleweekdays.weekday
+    from flights
+    inner join flightschedules on flights.flightNumber = flightschedules.flightNumber
+    inner join scheduleweekdays on flightschedules.flightNumber = scheduleweekdays.flightNumber
+    where flights.flightDate ='2016-08-26';
+    
+    select weekdays.weekdayNumber
+    from flights
+    inner join flightschedules on flights.flightNumber = flightschedules.flightNumber
+    inner join scheduleweekdays on flightschedules.flightNumber = scheduleweekdays.flightNumber
+    inner join weekdays on scheduleweekdays.weekday = weekdays.weekdayNumber
+    where flights.flightDate = '2016-08-26' and DAYOFWEEK('2016-08-26') = weekdays.weekdayNumber and flights.flightNumber = 'FA501';
+
+	select distinct flightschedules.flightNumber, flightschedules.originatingAirport, flightschedules.destinationAirport,flights.flightDate, weekdays.weekdayName
+    from flights
+    inner join flightschedules on flights.flightNumber = flightschedules.flightNumber
+    inner join scheduleweekdays on flightschedules.flightNumber = scheduleweekdays.flightNumber
+    inner join weekdays on scheduleweekdays.weekday = weekdays.weekdayNumber
+    where flights.flightDate = '2016-08-26' and flights.flightNumber = 'FA501' and DAYOFWEEK('2016-08-26') = weekdays.weekdayNumber;
