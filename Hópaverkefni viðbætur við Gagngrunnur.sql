@@ -457,3 +457,35 @@ as
     where flights.flightDate = curdate();
     
     select * from DepartureFlight;
+    
+    
+    
+    delimiter $$
+drop procedure if exists Flight_Insert $$
+create procedure Flight_Insert(flight_Number char(5),flight_date date,aircraft_ID char(6),flight_Time time)
+begin
+	declare Check_weekday int(11);
+    declare Week_day int(11);
+    declare msg varchar(255);
+    
+    SELECT DAYOFWEEK(flight_date) into Check_weekday;
+    
+    
+	select weekdays.weekdayNumber into Week_day
+    from weekdays
+    where DAYOFWEEK('2016-08-26') = weekdayNumber;
+    
+    if (Check_weekday like Week_day) then
+		insert into flights(flightDate,flightNumber,aircraftID,flightTime)values(flight_Number,flight_date,aircraft_ID,flight_Time);
+    end if;
+    
+    if (Check_weekday like Week_day) then
+		set msg = 'Cannot Create flight';
+		signal sqlstate '45000' set message_text = msg;
+	end if;
+    
+end $$
+delimiter ;
+
+call Flight_Insert('FA501','2017-01-01','TF-GSF','21:15');
+
