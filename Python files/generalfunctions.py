@@ -9,7 +9,7 @@ def message(msg, col, xy, font, screen):
     screen.blit(text, (xy[0], xy[1]))
 
 
-def button(text, xy, wh, col_list, font, window, mouse_pressed, action=None):
+def button(text, xy, wh, col_list, font, window, mouse_pressed, action=None, para=None):
     mouse = pygame.mouse.get_pos()
     mouse_clicked = pygame.mouse.get_pressed()
     if xy[0] + wh[0] > mouse[0] > xy[0] and xy[1] + wh[1] > mouse[1] > xy[1]:
@@ -21,7 +21,10 @@ def button(text, xy, wh, col_list, font, window, mouse_pressed, action=None):
         window.blit(button_text, button_r)
 
         if mouse_clicked[0] == 1 and mouse_pressed == 0 and action is not None:
-            action()
+            if para is not None:
+                action(para)
+            else:
+                action()
             mouse_pressed = 1
             return mouse_pressed
         if mouse_clicked[0] == 0:
@@ -29,7 +32,7 @@ def button(text, xy, wh, col_list, font, window, mouse_pressed, action=None):
             return mouse_pressed
     else:
         pygame.draw.rect(window, col_list[0], (xy[0], xy[1], wh[0], wh[1]))
-        button_text = font.render(text, True, (0, 0, 0), col_list[0])
+        button_text = font.render(text, True, (0, 0, 0))
 
     button_r = button_text.get_rect()
     button_r.center = (xy[0] + (wh[0] / 2), xy[1] + (wh[1] / 2))
