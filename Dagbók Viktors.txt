@@ -28,3 +28,6 @@ setti Upplýsingar á Stored Procedure sem Einar og Steinar get notað í Python
 klárað triggers á SP og búið til views fyrir heimasíðu steinars
 02.12.2016
 Klárað SeatingArrangement SP 
+
+04.12.2016
+Gert flight_insert SP, buið til wiki og gert viðbætur í gagnagrunn lesanlegan
