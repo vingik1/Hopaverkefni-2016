@@ -41,7 +41,7 @@ def button(text, xy, wh, col_list, font, window, mouse_pressed, action=None, par
 
 def draw_login_field(selected, window, font):
     white = (255, 255, 255)
-    white_dark = (200, 200, 200)
+    white_dark = (150, 150, 150)
     window_width = 500
     window_height = 500
 

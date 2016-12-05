@@ -34,3 +34,9 @@ def remove_employee(empl_num):
 
 def create_employee(e_number, f_name, l_name, b_date, country, j_title):
     cur.execute("call AddEmployee('" + str(e_number) + "', '" + str(f_name) + "', '" + str(l_name) + "', '" + str(b_date) + "', '" + str(country) + "', '" + str(j_title) + "')")
+
+
+def get_single_employee(empl_num):
+    cur.execute("SELECT * FROM `employeesregistration` WHERE EmployeeNumber = '" + empl_num + "'")
+
+    return cur

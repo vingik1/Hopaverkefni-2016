@@ -10,10 +10,13 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 WHITE_G = (200, 200, 200)
+WHITE_DARK = (150, 150, 150)
 
 adding = False
 b_pressed = 0
 remove_button = 0
+selected_person = ""
+selected_person_pos = 0
 
 Y = []
 yy = 50
@@ -202,29 +205,29 @@ def add_employee(window):
         func.message("Job Title:", (255, 255, 255), (50, 350), FONT, window)
 
         if field_selected == 1:
-            pygame.draw.rect(window, (255, 255, 255), pygame.Rect(500 - (200 + 50), 100, 200, 30), 2)
+            pygame.draw.rect(window, WHITE, pygame.Rect(500 - (200 + 50), 100, 200, 30), 2)
         else:
-            pygame.draw.rect(window, (200, 200, 200), pygame.Rect(500 - (200 + 50), 100, 200, 30), 2)
+            pygame.draw.rect(window, WHITE_DARK, pygame.Rect(500 - (200 + 50), 100, 200, 30), 2)
         if field_selected == 2:
-            pygame.draw.rect(window, (255, 255, 255), pygame.Rect(500 - (200 + 50), 150, 200, 30), 2)
+            pygame.draw.rect(window, WHITE, pygame.Rect(500 - (200 + 50), 150, 200, 30), 2)
         else:
-            pygame.draw.rect(window, (200, 200, 200), pygame.Rect(500 - (200 + 50), 150, 200, 30), 2)
+            pygame.draw.rect(window, WHITE_DARK, pygame.Rect(500 - (200 + 50), 150, 200, 30), 2)
         if field_selected == 3:
-            pygame.draw.rect(window, (255, 255, 255), pygame.Rect(500 - (200 + 50), 200, 200, 30), 2)
+            pygame.draw.rect(window, WHITE, pygame.Rect(500 - (200 + 50), 200, 200, 30), 2)
         else:
-            pygame.draw.rect(window, (200, 200, 200), pygame.Rect(500 - (200 + 50), 200, 200, 30), 2)
+            pygame.draw.rect(window, WHITE_DARK, pygame.Rect(500 - (200 + 50), 200, 200, 30), 2)
         if field_selected == 4:
-            pygame.draw.rect(window, (255, 255, 255), pygame.Rect(500 - (200 + 50), 250, 200, 30), 2)
+            pygame.draw.rect(window, WHITE, pygame.Rect(500 - (200 + 50), 250, 200, 30), 2)
         else:
-            pygame.draw.rect(window, (200, 200, 200), pygame.Rect(500 - (200 + 50), 250, 200, 30), 2)
+            pygame.draw.rect(window, WHITE_DARK, pygame.Rect(500 - (200 + 50), 250, 200, 30), 2)
         if field_selected == 5:
-            pygame.draw.rect(window, (255, 255, 255), pygame.Rect(500 - (200 + 50), 300, 200, 30), 2)
+            pygame.draw.rect(window, WHITE, pygame.Rect(500 - (200 + 50), 300, 200, 30), 2)
         else:
-            pygame.draw.rect(window, (200, 200, 200), pygame.Rect(500 - (200 + 50), 300, 200, 30), 2)
+            pygame.draw.rect(window, WHITE_DARK, pygame.Rect(500 - (200 + 50), 300, 200, 30), 2)
         if field_selected == 6:
-            pygame.draw.rect(window, (255, 255, 255), pygame.Rect(500 - (200 + 50), 350, 200, 30), 2)
+            pygame.draw.rect(window, WHITE, pygame.Rect(500 - (200 + 50), 350, 200, 30), 2)
         else:
-            pygame.draw.rect(window, (200, 200, 200), pygame.Rect(500 - (200 + 50), 350, 200, 30), 2)
+            pygame.draw.rect(window, WHITE_DARK, pygame.Rect(500 - (200 + 50), 350, 200, 30), 2)
 
         func.button("Add Employee", (100, 450), (150, 40), ((200, 200, 200), (255, 255, 255)), FONT, window, 0, create_employee, (e_number, f_name, l_name, b_date, country, j_title))
         func.button("Cancel", (300, 450), (150, 40), ((200, 200, 200), (255, 255, 255)), FONT, window, 0, cancel)
@@ -267,8 +270,43 @@ def page_button(window, next_back=True):
     window.blit(t, t_r)
 
 
+def selected_employee(e_num, window):
+    for info in sql.get_single_employee(e_num):
+        number = info[0]
+        fname = info[1]
+        lname = info[2]
+        bdate = info[3]
+        country = info[4]
+        jtitle = info[5]
+    func.message(str(number), WHITE, (5, 420), FONT, window)
+    func.message(str(fname), WHITE, (130, 420), FONT, window)
+    func.message(str(lname), WHITE, (250, 420), FONT, window)
+    func.message(str(bdate), WHITE, (360, 420), FONT, window)
+    func.message(str(country), WHITE, (100, 450), FONT, window)
+    func.message(str(jtitle), WHITE, (250, 450), FONT, window)
+
+def add_button(window, x, y, b_p, action=None):
+    mouse = pygame.mouse.get_pos()
+    m_p = pygame.mouse.get_pressed()
+    if x + 20 > mouse[0] > x and y + 20 > mouse[1] > y:
+        pygame.draw.rect(window, WHITE, pygame.Rect(x, y, 20, 20))
+        t = FONT.render("+", True, BLACK)
+        if m_p[0] == 1 and b_p == 0:
+            action(window)
+            b_p == 1
+        #if m_p[0] == 0:
+          #  b_p = 0
+    else:
+        pygame.draw.rect(window, BLACK, pygame.Rect(x, y, 20, 20))
+        t = FONT.render("+", True, WHITE)
+
+    t_r = t.get_rect()
+    t_r.center = (x + (20 / 2), y + (15 / 2))
+    window.blit(t, t_r)
+
+
 def user_logged(logged_in, window):
-    global k, page_index, adding, b_pressed, remove_button
+    global k, page_index, adding, b_pressed, remove_button, selected_person, selected_person_pos
     if logged_in == 1:
         logged_in_loop = True
         while logged_in_loop:
@@ -282,7 +320,17 @@ def user_logged(logged_in, window):
             window.fill(BLACK)
             draw_straight_line(50, 2, window)
             draw_straight_line(400, 2, window)
-
+            if mouse[1] < 50 or mouse[1] > 400:
+                if m_c[0] == 1:
+                    selected_person = ""
+                    selected_person_pos = 0
+            for person, pos in zip(sql.get_employees(page_index), Y):
+                if pos + 25 > mouse[1] > pos:
+                    if m_c[0] == 1:
+                        selected_person = str(person[2])
+                        selected_person_pos = pos + 5
+                if selected_person_pos > 0:
+                    pygame.draw.rect(window, (100, 100, 100), pygame.Rect(0, selected_person_pos, 500, 25))
             for person, pos in zip(sql.get_employees(page_index), Y):
                 if pos + 25 > mouse[1] > pos:
                     pygame.draw.rect(window, (100, 100, 100), pygame.Rect(0, pos + 5, 500, 25))
@@ -299,6 +347,8 @@ def user_logged(logged_in, window):
             page_button(window, True)
             page_button(window, False)
 
-            func.button("Add", (150, 450), (40, 30), ((200, 200, 200), (255, 255, 255)), FONT, window, 0, add_employee, window)
+            add_button(window, 230, 405, 0, add_employee)
 
+            if selected_person_pos > 0:
+                selected_employee(selected_person, window)
             pygame.display.update()
